@@ -19,7 +19,6 @@ dev_account = app.node.try_get_context("DEV_ACCOUNT")
 vpc_id = app.node.try_get_context("VPC_ID")
 security_group_id = app.node.try_get_context("SECURITY_GROUP_ID")
 role_arn = app.node.try_get_context("ROLE_ARN")
-
 account = os.environ.get("AWS_DEFAULT_ACCOUNT", os.environ.get("CDK_DEFAULT_ACCOUNT"))
 region = os.environ.get("AWS_DEFAULT_REGION", os.environ.get("CDK_DEFAULT_REGION"))
 if region is not None and account is not None:
