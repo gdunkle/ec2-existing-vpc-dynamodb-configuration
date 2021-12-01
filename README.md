@@ -19,6 +19,7 @@ Python CDK project to demonstrate how you can dynamically deploy ec2 instances t
   - machine_image_name - (can be 'LATEST')
   - user_data - (string set of commands)
 
+
 To create a virtualenv on MacOS and Linux:
 
 ```
@@ -42,3 +43,12 @@ $  cdk deploy -c DEFAULT_ACCOUNT=<THE DEFAULT AWS ACCOUNT TO DEPLOY TO IF NONE I
 
 ```
  The use of the context variables on the command line is not necessary you can (and probably should) define these values directly in the app.py along with different stacks for different environments
+
+# Example
+
+These values...
+![](images/01.png)
+
+Result in this deployment
+
+![](images/02.png)
