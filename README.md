@@ -16,8 +16,8 @@ Python CDK project to demonstrate how you can dynamically deploy ec2 instances t
   - instance_type_class - Class of the instace based on [ec2.InstanceClass](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.InstanceClass.html)
   - instance_type_size - Size of the instance based on [ec2.InstanceSize](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.InstanceSize.html)
   - machine_image_is_windows - Whether the instance is windows otherwise linux
-  - machine_image_name - (can be 'LATEST')
-  - user_data - (string set of commands)
+  - machine_image_name - can be 'LATEST' or specific ami using the format 'region:ami-id' for example 'us-east-2:ami-096b151a05b7e8b5c'
+  - user_data - String set of commands
 
 
 To create a virtualenv on MacOS and Linux:
