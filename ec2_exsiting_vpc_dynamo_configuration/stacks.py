@@ -1,24 +1,43 @@
-from aws_cdk import (
-    core as cdk
-    # aws_sqs as sqs,
-)
-
-# For consistency with other languages, `cdk` is the preferred import name for
-# the CDK's core module.  The following line also imports it as `core` for use
-# with examples from the CDK Developer's Guide, which are in the process of
-# being updated to use `cdk`.  You may delete this import if you don't need it.
-from aws_cdk import core
+from aws_cdk import core as cdk, aws_ec2 as ec2, aws_iam as iam
+import boto3
+from botocore.config import Config
+from ec2_exsiting_vpc_dynamo_configuration import dynamo_to_ec2_props
+from ec2_exsiting_vpc_dynamo_configuration.constructs import DynamicEc2
 
 
-class Ec2Stack(cdk.Stack):
-
-    def __init__(self, scope: cdk.Construct, construct_id: str, **kwargs) -> None:
+class DevStack(cdk.Stack):
+    def __init__(
+        self,
+        scope: cdk.Construct,
+        construct_id: str,
+        vpc_id: str,
+        subnet_selection: ec2.SubnetSelection,
+        security_group_id: str,
+        role_arn: str,
+        **kwargs
+    ) -> None:
         super().__init__(scope, construct_id, **kwargs)
+        config = Config(
+            region_name=self.region,
+            signature_version="v4",
+            retries={"max_attempts": 10, "mode": "standard"},
+        )
 
-        # The code that defines your stack goes here
+        client = boto3.client("dynamodb", config=config)
+        paginator = client.get_paginator("scan")
+        iterator = paginator.paginate(TableName="ec2_instances")
+        vpc = ec2.Vpc.from_lookup(self, "vpc", vpc_id=vpc_id)
 
-        # example resource
-        # queue = sqs.Queue(
-        #     self, "Ec2ExsitingVpcDynamoConfigurationQueue",
-        #     visibility_timeout=cdk.Duration.seconds(300),
-        # )
+        instance_role = iam.Role.from_role_arn(self, "isntance_role", role_arn=role_arn)
+        security_group = ec2.SecurityGroup.from_security_group_id(
+            self, "security-group", security_group_id=security_group_id
+        )
+        for page in iterator:
+            items = page["Items"]
+            for item in items:
+                props = dynamo_to_ec2_props(item)
+                props.vpc = vpc
+                props.subnet_selection = subnet_selection
+                props.instance_role = instance_role
+                props.security_group = security_group
+                DynamicEc2(self, props.instance_name, props)

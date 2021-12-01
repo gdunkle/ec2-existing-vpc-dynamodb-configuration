@@ -1,58 +1,44 @@
 
-# Welcome to your CDK Python project!
+# ec2-existing-vpc-dynamodb-configuration
 
-This is a blank project for Python development with CDK.
+Python CDK project to demonstrate how you can dynamically deploy ec2 instances to an existing vpc based on configuration in dynamodb
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+### Deployment
 
-This project is set up like a standard Python project.  The initialization
-process also creates a virtualenv within this project, stored under the `.venv`
-directory.  To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
+#### Prerequisites
 
-To manually create a virtualenv on MacOS and Linux:
+- [AWS Command Line Interface](https://aws.amazon.com/cli/)
+- [AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html#getting_started_install)
+- Python 3.9 or later
+- [Poetry](https://python-poetry.org/docs/)
+- A dynamodb table named "ec2_instances" with the following attributes
+  - instance_name - Unique key which serves as the name of the instance
+  - instance_type_class - Class of the instace based on [ec2.InstanceClass](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.InstanceClass.html)
+  - instance_type_size - Size of the instance based on [ec2.InstanceSize](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.InstanceSize.html)
+  - machine_image_is_windows - Whether the instance is windows otherwise linux
+  - machine_image_name - (can be 'LATEST')
+  - user_data - (string set of commands)
 
-```
-$ python3 -m venv .venv
-```
-
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
-
-```
-$ source .venv/bin/activate
-```
-
-If you are a Windows platform, you would activate the virtualenv like this:
+To create a virtualenv on MacOS and Linux:
 
 ```
-% .venv\Scripts\activate.bat
+$ poetry install
+```
+Drop into the python virtual env
+```
+$ poetry shell
 ```
 
-Once the virtualenv is activated, you can install the required dependencies.
 
+If you haven't already be sure to bootstrap your cdk environment
 ```
-$ pip install -r requirements.txt
-```
-
-At this point you can now synthesize the CloudFormation template for this code.
-
-```
-$ cdk synth
+$ cdk bootstrap aws://$AWS_DEFAULT_ACCOUNT/$AWS_DEFAULT_REGION
 ```
 
-To add additional dependencies, for example other CDK libraries, just add
-them to your `setup.py` file and rerun the `pip install -r requirements.txt`
-command.
+At this point you can now deploy the solution by issuing the following command
 
-## Useful commands
+```
+$  cdk deploy -c DEFAULT_ACCOUNT=<THE DEFAULT AWS ACCOUNT TO DEPLOY TO IF NONE IS SPECIFIED> -c DEFAULT_REGION=<THE DEFAULT AWS REGION TO DEPLOY TO IF NONE IS SPECIFIED> -c DEV_ACCOUNT=<YOUR DEVELOPMENT ACCOUNT ID> -c VPC_ID=<A VPC ID TO DEPLOY TO> -c SECURITY_GROUP_ID=<A SECURITY GROUP TO ASSIGN TO THE INSTANCES> -c ROLE_ARN="<THE INSTANCE ROLE ARN TO ASSIGN TO THE INSTANCES>"
 
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
-
-Enjoy!
+```
+ The use of the context variables on the command line is not necessary you can (and probably should) define these values directly in the app.py along with different stacks for different environments
