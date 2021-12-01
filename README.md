@@ -47,8 +47,8 @@ $  cdk deploy -c DEFAULT_ACCOUNT=<THE DEFAULT AWS ACCOUNT TO DEPLOY TO IF NONE I
 # Example
 
 These values...
-![](images/01.png)
+![](images/03.png)
 
 Result in this deployment
 
-![](images/02.png)
+![](images/04.png)
