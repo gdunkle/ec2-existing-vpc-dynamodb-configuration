@@ -15,14 +15,6 @@ class DynamicEc2(cdk.Construct):
             machine_image=props.machine_image,
             vpc=props.vpc,
             role=props.instance_role,
-            block_devices=[
-                ec2.BlockDevice(
-                    device_name="/dev/xvda",
-                    volume=ec2.BlockDeviceVolume.ebs(
-                        30, encrypted=False, delete_on_termination=True
-                    ),
-                )
-            ],
             instance_name=props.instance_name,
             security_group=props.security_group,
             vpc_subnets=props.subnet_selection,

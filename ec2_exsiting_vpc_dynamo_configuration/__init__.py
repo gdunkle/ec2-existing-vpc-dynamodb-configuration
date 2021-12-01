@@ -20,7 +20,6 @@ class DynamicEc2Props:
 
 
 def linux_init_script(stack: cdk.Stack, props: DynamicEc2Props):
-
     handle = ec2.InitServiceRestartHandle()
 
     cfn_auto_reloader_conf = dedent(
@@ -105,5 +104,12 @@ def get_machine_image(name: str, is_windows: bool) -> ec2.MachineImage:
                 generation=ec2.AmazonLinuxGeneration.AMAZON_LINUX_2
             )
     else:
-        machine_image = ec2.LookupMachineImage(name=name, windows=is_windows)
+        ami_map = name.split(":")
+        region = ami_map[0]
+        ami = ami_map[1]
+        if is_windows:
+            machine_image = ec2.MachineImage.generic_windows({region: ami})
+        else:
+            machine_image = ec2.MachineImage.generic_linux({region: ami})
+
     return machine_image
