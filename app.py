@@ -28,6 +28,7 @@ elif account is not None:
 else:
     env = cdk.Environment(account=default_account, region=default_region)
 is_dev = True if env.account == dev_account else False
+print(f"Account #: {env.account}, Region: {env.region}")
 if is_dev:
     DevStack(
         app,

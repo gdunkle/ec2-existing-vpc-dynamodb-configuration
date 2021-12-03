@@ -18,13 +18,17 @@ class DynamicEc2(cdk.Construct):
             instance_name=props.instance_name,
             security_group=props.security_group,
             vpc_subnets=props.subnet_selection,
+            key_name=props.key_name,
         )
         cfn_instance = instance.node.default_child
         user_data = (
             ec2.UserData.for_windows() if props.is_windows else ec2.UserData.for_linux()
         )
-        for command in props.user_data:
-            user_data.add_commands(dedent(command))
+        for commands in props.user_data:
+            if commands is not None:
+                for command in commands:
+                    if command is not None:
+                        user_data.add_commands(dedent(command))
 
         user_data_string = user_data.render()
         instance.add_user_data(user_data_string)

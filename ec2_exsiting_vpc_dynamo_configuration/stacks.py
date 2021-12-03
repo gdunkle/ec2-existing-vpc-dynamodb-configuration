@@ -32,6 +32,7 @@ class DevStack(cdk.Stack):
         security_group = ec2.SecurityGroup.from_security_group_id(
             self, "security-group", security_group_id=security_group_id
         )
+
         for page in iterator:
             items = page["Items"]
             for item in items:

@@ -17,6 +17,7 @@ class DynamicEc2Props:
         self.security_group = kwargs.get("security_group", None)
         self.user_data: [str] = kwargs.get("user_data", None)
         self.is_windows: bool = kwargs.get("is_windows", None)
+        self.key_name: str = kwargs.get("key_name", None)
 
 
 def linux_init_script(stack: cdk.Stack, props: DynamicEc2Props):
@@ -76,7 +77,8 @@ def dynamo_to_ec2_props(item: dict) -> DynamicEc2Props:
     machine_image_is_windows = strtobool(item["machine_image_is_windows"]["S"])
     machine_image_name = item["machine_image_name"]["S"]
     user_data_list = []
-    user_data_string_set = item["user_data"]["SS"] if "user_data" in item else None
+    user_data_string_set = (item["user_data"]["SS"] if "user_data" in item else None,)
+    key_name = item["key_name"]["S"]
     if user_data_string_set is not None:
         for line in user_data_string_set:
             user_data_list.append(line)
@@ -89,6 +91,7 @@ def dynamo_to_ec2_props(item: dict) -> DynamicEc2Props:
         machine_image=get_machine_image(machine_image_name, machine_image_is_windows),
         user_data=user_data_list,
         is_windows=machine_image_is_windows,
+        key_name=key_name,
     )
 
 
