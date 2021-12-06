@@ -15,6 +15,7 @@ Python CDK project to demonstrate how you can dynamically deploy ec2 instances t
   - instance_name - Unique key which serves as the name of the instance
   - instance_type_class - Class of the instace based on [ec2.InstanceClass](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.InstanceClass.html)
   - instance_type_size - Size of the instance based on [ec2.InstanceSize](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.InstanceSize.html)
+  - key_name - the name of an existing ec2 keypair to associated with this instance 
   - machine_image_is_windows - Whether the instance is windows otherwise linux
   - machine_image_name - can be 'LATEST' or specific ami using the format 'region:ami-id' for example 'us-east-2:ami-096b151a05b7e8b5c'
   - user_data - String set of commands
@@ -47,7 +48,7 @@ $  cdk deploy -c DEFAULT_ACCOUNT=<THE DEFAULT AWS ACCOUNT TO DEPLOY TO IF NONE I
 # Example
 
 These values...
-![](images/03.png)
+![](images/05.png)
 
 Result in this deployment
 
