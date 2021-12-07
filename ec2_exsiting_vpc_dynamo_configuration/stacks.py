@@ -1,14 +1,15 @@
-from aws_cdk import core as cdk, aws_ec2 as ec2, aws_iam as iam
+from aws_cdk import Stack, aws_ec2 as ec2, aws_iam as iam
+from constructs import Construct
 import boto3
 from botocore.config import Config
 from ec2_exsiting_vpc_dynamo_configuration import dynamo_to_ec2_props
 from ec2_exsiting_vpc_dynamo_configuration.constructs import DynamicEc2
 
 
-class DevStack(cdk.Stack):
+class DevStack(Stack):
     def __init__(
         self,
-        scope: cdk.Construct,
+        scope: Construct,
         construct_id: str,
         vpc_id: str,
         subnet_selection: ec2.SubnetSelection,

@@ -1,11 +1,12 @@
-from aws_cdk import core as cdk, aws_iam as iam, aws_ec2 as ec2
+from aws_cdk import Stack, aws_iam as iam, aws_ec2 as ec2
+from constructs import Construct
 from ec2_exsiting_vpc_dynamo_configuration import DynamicEc2Props
 from textwrap import dedent
 
 
-class DynamicEc2(cdk.Construct):
+class DynamicEc2(Construct):
     def __init__(
-        self, scope: cdk.Construct, construct_id: str, props: DynamicEc2Props
+        self, scope: Construct, construct_id: str, props: DynamicEc2Props
     ) -> None:
         super().__init__(scope, construct_id)
         instance = ec2.Instance(

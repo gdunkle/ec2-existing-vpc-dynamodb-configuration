@@ -1,5 +1,5 @@
-from aws_cdk import core as cdk, aws_iam as iam, aws_ec2 as ec2
-
+from aws_cdk import Stack, aws_iam as iam, aws_ec2 as ec2
+import constructs
 from textwrap import dedent
 from distutils.util import strtobool
 
@@ -20,7 +20,7 @@ class DynamicEc2Props:
         self.key_name: str = kwargs.get("key_name", None)
 
 
-def linux_init_script(stack: cdk.Stack, props: DynamicEc2Props):
+def linux_init_script(stack: Stack, props: DynamicEc2Props):
     handle = ec2.InitServiceRestartHandle()
 
     cfn_auto_reloader_conf = dedent(
