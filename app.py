@@ -39,6 +39,7 @@ if is_dev:
         security_group_id=security_group_id,
         role_arn=role_arn,
         env=env,
+        instances_file="instances.json",
     )
 
 app.synth()

@@ -1,0 +1,32 @@
+{
+  "instances": [
+    {
+      "name": "instance01",
+      "class": "BURSTABLE3",
+      "size":"LARGE",
+      "key_name": "id_rsa",
+      "is_windows": false,
+      "image_name": "LATEST"
+
+    },
+    {
+      "name": "instance02",
+      "class": "BURSTABLE3",
+      "size":"LARGE",
+      "key_name": "id_rsa",
+      "is_windows": false,
+      "image_name": "LATEST",
+      "user_data": ["<powershell>\n$file = $env:SystemRoot + \"\\Temp\\\" + (Get-Date).ToString(\"MM-dd-yy-hh-mm\")\nNew-Item $file -ItemType file\n</powershell>"]
+
+    },
+    {
+      "name": "instance04",
+      "class": "BURSTABLE3",
+      "size":"LARGE",
+      "key_name": "id_rsa",
+      "is_windows": false,
+      "image_name": "us-east-2:ami-096b151a05b7e8b5c",
+      "user_data": ["<powershell>\n$file = $env:SystemRoot + \"\\Temp\\\" + (Get-Date).ToString(\"MM-dd-yy-hh-mm\")\nNew-Item $file -ItemType file\n</powershell>"]
+    }
+  ]
+}

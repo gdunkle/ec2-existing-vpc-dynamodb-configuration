@@ -21,7 +21,9 @@ class DynamicEc2(Construct):
             vpc_subnets=props.subnet_selection,
             key_name=props.key_name,
         )
+
         cfn_instance = instance.node.default_child
+        cfn_instance.override_logical_id(props.instance_name)
         user_data = (
             ec2.UserData.for_windows() if props.is_windows else ec2.UserData.for_linux()
         )

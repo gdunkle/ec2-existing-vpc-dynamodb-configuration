@@ -11,13 +11,135 @@ Python CDK project to demonstrate how you can dynamically deploy ec2 instances t
 - [AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html#getting_started_install)
 - Python 3.9 or later
 - [Poetry](https://python-poetry.org/docs/)
-- A dynamodb table named "ec2_instances" with the following attributes
-  - instance_name - Unique key which serves as the name of the instance
-  - instance_type_class - Class of the instace based on [ec2.InstanceClass](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.InstanceClass.html)
-  - instance_type_size - Size of the instance based on [ec2.InstanceSize](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.InstanceSize.html)
+- A json file  with the following schema
+
+``` json
+"$schema": "http://json-schema.org/draft-04/schema#",
+"type": "object",
+"properties": {
+  "instances": {
+    "type": "array",
+    "items": [{
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "class": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "key_name": {
+            "type": "string"
+          },
+          "is_windows": {
+            "type": "boolean"
+          },
+          "image_name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "class",
+          "size",
+          "key_name",
+          "is_windows",
+          "image_name"
+        ]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "class": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "key_name": {
+            "type": "string"
+          },
+          "is_windows": {
+            "type": "boolean"
+          },
+          "image_name": {
+            "type": "string"
+          },
+          "user_data": {
+            "type": "array",
+            "items": [{
+              "type": "string"
+            }]
+          }
+        },
+        "required": [
+          "name",
+          "class",
+          "size",
+          "key_name",
+          "is_windows",
+          "image_name",
+          "user_data"
+        ]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "class": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "key_name": {
+            "type": "string"
+          },
+          "is_windows": {
+            "type": "boolean"
+          },
+          "image_name": {
+            "type": "string"
+          },
+          "user_data": {
+            "type": "array",
+            "items": [{
+              "type": "string"
+            }]
+          }
+        },
+        "required": [
+          "name",
+          "class",
+          "size",
+          "key_name",
+          "is_windows",
+          "image_name",
+          "user_data"
+        ]
+      }
+    ]
+  }
+},
+"required": [
+  "instances"
+]
+}
+```
+  - name - Unique key which serves as the name of the instance
+  - class - Class of the instace based on [ec2.InstanceClass](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.InstanceClass.html)
+  - size - Size of the instance based on [ec2.InstanceSize](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.InstanceClass.html)
   - key_name - the name of an existing ec2 keypair to associated with this instance 
-  - machine_image_is_windows - Whether the instance is windows otherwise linux
-  - machine_image_name - can be 'LATEST' or specific ami using the format 'region:ami-id' for example 'us-east-2:ami-096b151a05b7e8b5c'
+  - is_windows - Whether the instance is windows otherwise linux
+  - image_name - can be 'LATEST' or specific ami using the format 'region:ami-id' for example 'us-east-2:ami-096b151a05b7e8b5c'
   - user_data - String set of commands
 
 
